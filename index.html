@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CiviScope</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #121212;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .phone-frame {
+      width: 375px;
+      height: 668px;
+      background-color: #000;
+      border-radius: 30px;
+      padding: 10px;
+      box-shadow: 0px 0px 20px rgba(0, 255, 179, 0.7);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center; 
+      align-items: center;
+      position: relative;
+    }
+
+    .logo {
+      width: 150px; 
+      margin: -10px; 
+      position: relative; 
+      top: -40px; 
+    }
+
+    h1 {
+      font-weight: 600;
+      font-size: 30px;
+      text-align: center;
+      background: linear-gradient(to right, #00FFB3, #00BFFF);
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 13px;
+    }
+
+    .input-field {
+      width: 80%;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      border: none;
+      font-size: 15px;
+    }
+
+    .primary-btn {
+      background: linear-gradient(to right, #00FFB3, #00BFFF);
+      color: #121212;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 10px; 
+      position: relative; 
+      top: 0px; 
+    }
+
+    .page {
+      display: none;
+      text-align: center;
+      width: 100%;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .bottom-menu {
+      display: flex;
+      justify-content: space-around;
+      background-color: #1F1F1F;
+      padding: 0px;
+      position: absolute;
+      bottom: 0;
+      width: 110%;
+      height: 52px;
+      z-index: 1000;
+    }
+
+    .photo-upload {
+      width: 80%;
+      height: 40px;
+      margin: 0px auto 10px;
+      background-color: #1F1F1F;
+      border-radius: 5px;
+      color: #00FFB3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      position: relative; /* Cambiado a relative */
+    }
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid #00FFB3;
+  border-top: 3px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  position: absolute;
+  right: 10px;
+  display: none;
+}
+
+.thumbnail {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 5px;
+  position: absolute;
+  right: 10px; /* Posiciona la miniatura a la derecha dentro del contenedor */
+  display: none;
+}
+
+    .photo-upload input {
+      display: none;
+    }
+
+    #map {
+      width: 80%;
+      height: 240px; 
+      margin: 10px auto; 
+      border: 2px solid #00FFB3;
+      border-radius: 5px;
+      position: relative; 
+      z-index: 1; 
+    }
+
+    .thanks-popup {
+      display: none;
+      position: absolute; /* Cambiado a absolute */
+      top: 50%; /* Centrado verticalmente */
+      left: 50%;
+      transform: translate(-50%, -50%); /* Centrado horizontal y vertical */
+      width: 80%;
+      max-width: 300px;
+      background-color: white;
+      color: #121212;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+      z-index: 1000; /* Asegura que se muestre encima de todo */
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      font-size: 10px;
+      cursor: pointer;
+      color: gray;
+    }
+
+    .bottom-menu button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .report-input-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 74%;
+      margin: 5px 0;
+    }
+
+    #description {
+      width: 75%;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      font-size: 13px;
+    }
+
+    .voice-button {
+      margin-left: 9px;
+      background: linear-gradient(to right, #00FFB3, #00BFFF);
+      color: #121212;
+      border: none;
+      padding: 8px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .input-container {
+        width: 80%;
+        display: flex;
+        align-items: center;
+        margin: 10px auto; 
+        margin-left: 33px; 
+    }
+
+.spinner {
+      width: 20px;
+      height: 20px;
+      border: 3px solid #00FFB3;
+      border-top: 3px solid transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      position: absolute;
+      left: 10px;
+    }
+
+    @keyframes spin {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .thumbnail {
+      width: 30px;
+      height: 30px;
+      object-fit: cover;
+      border-radius: 5px;
+      position: absolute;
+      left: 10px;
+    }
+.notification-button {
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #00FFB3;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+  </style>
+</head>
+<body>
+ <div class="phone-frame">
+    <div class="app-container">
+      <div id="login" class="page active">
+        <img src="civiscope.jpg" alt="Logo CiviScope" class="logo"> 
+        <h1>Bienvenido a CiviScope</h1>
+        <input type="text" class="input-field" value="usuario.ebc" readonly>
+        <input type="password" class="input-field" placeholder="Contraseña" id="password">
+        <button class="primary-btn" onclick="login()">Comenzar</button>
+        <p id="error-message" style="color: red; display: none;">Contraseña incorrecta. Intenta de nuevo.</p>
+      </div>
+
+      <div id="report" class="page">
+        <h2 style="background: linear-gradient(to right, #00FFB3, #00BFFF); -webkit-background-clip: text; color: transparent;">
+            Reportar Problema
+        </h2>
+        <select class="input-field">
+            <option>Bache</option>
+            <option>Inundación</option>
+            <option>Coladera destapada</option>
+            <option>Tope no visible</option>
+            <option>Señalización no visible</option>
+            <option>Mala iluminación</option>
+            <option>Otro</option>
+        </select>
+
+        <div class="input-container">
+          <textarea id="description" class="input-field" placeholder="Descripción (opcional)"></textarea>
+          <button class="voice-button" onclick="startVoiceRecognition()">🎤 Hablar</button>
+        </div>
+
+        <label class="photo-upload">
+            <span>Tomar/Subir Foto</span>
+            <div class="spinner" id="spinner" style="display: none;"></div>
+            <img id="thumbnail" class="thumbnail" style="display: none;">
+            <input type="file" accept="image/*" onchange="handleImageUpload(event)">
+        </label>
+        <div id="map"></div>
+        <button class="primary-btn" onclick="submitReport()">Subir Reporte</button>
+      </div>
+
+      <div class="thanks-popup" id="thanksPopup">
+        <button class="close-btn" onclick="closePopup()">X</button>
+        <h3>¡Gracias por tu reporte!</h3>
+        <p>Recibirás una actualización en un plazo de 7 días.</p>
+      </div>
+
+<div id="notifications" class="page" style="padding: 5px; max-width: 320px; text-align: left; margin: auto;">
+        <h2 style="background: linear-gradient(to right, #00FFB3, #00BFFF); -webkit-background-clip: text; color: transparent;">
+            Notificaciones
+        </h2>
+
+<button id="dictateBtn" class="notification-button" onclick="toggleDictation()">📢</button>
+
+        <div style="background-color: rgba(156, 246, 225, 0.58); padding: 20px; border-radius: 10px;">
+            <div class="notification" style="display: flex; align-items: flex-start; margin-bottom: 20px; font-size: 10px;">
+                <span style="font-size: 20px; margin-right: 5px;">👤</span>
+                <div style="text-align: left;">
+                    Bache grande en Av. Sor Juana Inés de la Cruz, Tlalnepantla.<br>
+                    <small style="display: block; margin-top: 2px;">Hace 10 min.</small>
+                </div>
+            </div>
+            <div class="notification" style="display: flex; align-items: flex-start; margin-bottom: 20px; font-size: 10px;">
+                <span style="font-size: 20px; margin-right: 5px;">👤</span>
+                <div style="text-align: left;">
+                    Inundación reportada en Av. Gustavo Baz, Naucalpan.<br>
+                    <small style="display: block; margin-top: 2px;">Hace 35 min.</small>
+                </div>
+            </div>
+            <div class="notification" style="display: flex; align-items: flex-start; margin-bottom: 20px; font-size: 10px;">
+                <span style="font-size: 20px; margin-right: 5px;">👤</span>
+                <div style="text-align: left;">
+                    Falta de iluminación en Calle Ahuizotla, Naucalpan.<br>
+                    <small style="display: block; margin-top: 2px;">Hace 1 hora.</small>
+                </div>
+            </div>
+            <div class="notification" style="display: flex; align-items: flex-start; margin-bottom: 20px; font-size: 10px;">
+                <span style="font-size: 20px; margin-right: 5px;">👤</span>
+                <div style="text-align: left;">
+                    Coladera abierta en Av. Jinetes, Valle Dorado.<br>
+                    <small style="display: block; margin-top: 2px;">Ayer 23:28:00.</small>
+                </div>
+            </div>
+            <div class="notification" style="display: flex; align-items: flex-start; margin-bottom: 20px; font-size: 10px;">
+                <span style="font-size: 20px; margin-right: 5px;">👤</span>
+                <div style="text-align: left;">
+                    Semáforo sin funcionar en Av. Primero de Mayo, Tlalnepantla.<br>
+                    <small style="display: block; margin-top: 2px;">Ayer 12:45:00.</small>
+                </div>
+            </div>
+            <div class="notification" style="display: flex; align-items: flex-start; margin-bottom: 20px; font-size: 10px;">
+                <span style="font-size: 20px; margin-right: 5px;">👤</span>
+                <div style="text-align: left;">
+                    Árbol caído en Blvd. Manuel Ávila Camacho, Naucalpan.<br>
+                    <small style="display: block; margin-top: 2px;">Reportado el 22/10/2024.</small>
+                </div>
+            </div>
+            <div class="notification" style="display: flex; align-items: flex-start; margin-bottom: 20px; font-size: 10px;">
+                <span style="font-size: 20px; margin-right: 5px;">👤</span>
+                <div style="text-align: left;">
+                    Accidente menor en Calle San Mateo, Valle Dorado.<br>
+                    <small style="display: block; margin-top: 2px;">Reportado el 19/10/2024.</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+      <div class="bottom-menu" id="bottomMenu">
+        <button onclick="goBack()">⬅️</button>
+        <button onclick="showPage('report')">🏠</button>
+        <button>📍</button>
+        <button onclick="showPage('notifications')">🔔</button>
+        <button>👤</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  function handleImageUpload(event) {
+      const fileInput = event.target;
+      const file = fileInput.files[0];
+      const spinner = document.getElementById("spinner");
+      const thumbnail = document.getElementById("thumbnail");
+
+      if (file) {
+        // Mostrar spinner
+        spinner.style.display = "block";
+
+        // Simular carga de imagen
+        setTimeout(() => {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            thumbnail.src = e.target.result;
+            spinner.style.display = "none"; // Ocultar spinner
+            thumbnail.style.display = "block"; // Mostrar miniatura
+          };
+          reader.readAsDataURL(file);
+       }, 1000); // Simulación de 1 segundo de carga
+  }
+}
+ 
+    function geolocateAndInitMap() {
+      // Mueve la solicitud de geolocalización fuera de la función login
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            initMap(lat, lng);
+          },
+          (error) => {
+            alert("No se pudo obtener tu ubicación: " + error.message);
+          }
+        );
+      } else {
+        alert("Geolocalización no es compatible con este navegador.");
+      }
+    }
+
+    // Iniciar el mapa inmediatamente al cargar la página
+    document.addEventListener("DOMContentLoaded", geolocateAndInitMap);
+
+    function initMap(lat, lng) {
+      const position = { lat, lng };
+      const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 15,
+        center: position,
+      });
+
+      new google.maps.Marker({
+        map,
+        position,
+        title: "Tu ubicación",
+      });
+    }
+
+    function login() {
+      const password = document.getElementById('password').value;
+      const errorMessage = document.getElementById('error-message');
+      
+      if (password === "2024") {
+        showPage('report');
+        errorMessage.style.display = "none"; // Ocultar mensaje de error
+      } else {
+        errorMessage.style.display = "block"; // Mostrar mensaje de error
+      }
+    }
+
+    function showPage(pageId) {
+      const pages = document.querySelectorAll('.page');
+      pages.forEach(page => page.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+    }
+
+    function goBack() {
+      showPage('login');
+    }
+
+    function submitReport() {
+      // Simular la acción de subir el reporte
+      document.getElementById('report').classList.remove('active');
+      document.getElementById('thanksPopup').style.display = 'block';
+    }
+
+    function closePopup() {
+      document.getElementById('thanksPopup').style.display = 'none';
+      goBack();
+    }
+
+    function startVoiceRecognition() {
+  if (!('webkitSpeechRecognition' in window)) {
+    alert("La API de reconocimiento de voz no está disponible en tu navegador.");
+    return;
+  }
+
+  recognition = new webkitSpeechRecognition();
+  recognition.lang = 'es-ES';
+  recognition.interimResults = false;
+
+  recognition.onresult = function(event) {
+    const transcript = event.results[0][0].transcript;
+    document.getElementById('description').value = transcript;
+  };
+
+  recognition.onerror = function(event) {
+    console.error('Error en reconocimiento de voz: ', event.error);
+  };
+
+  recognition.start();
+}
+
+    let isDictating = false;
+let speechSynthesisUtterance;
+
+function toggleDictation() {
+  if (isDictating) {
+    pauseDictation();
+  } else {
+    startDictation();
+  }
+}
+
+function startDictation() {
+  const notifications = document.querySelectorAll(".notification");
+  let textToRead = '';
+
+  notifications.forEach((notification) => {
+    const notificationText = notification.innerText.replace(/👤/g, ""); // Eliminar el emoji 👤
+    textToRead += notificationText + " ";
+  });
+
+  speechSynthesisUtterance = new SpeechSynthesisUtterance(textToRead);
+  window.speechSynthesis.speak(speechSynthesisUtterance);
+  isDictating = true;
+  document.getElementById('dictateBtn').textContent = "🛑"; // Cambiar a detener
+}
+
+function pauseDictation() {
+  if (speechSynthesisUtterance) {
+    window.speechSynthesis.cancel();
+  }
+
+  isDictating = false;
+  document.getElementById('dictateBtn').textContent = "📢"; // Cambiar a altavoz
+}
+
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyANHc3k8hU4YWtj3MHqnX38h9UjTVUQxOc&callback=geolocateAndInitMap" async defer></script>
+</body>
+</html>
